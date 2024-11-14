@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
-import Cookies from 'js-cookie';
 import { Spinner } from 'react-bootstrap';
 
 const AllCars = () => {
@@ -15,7 +14,11 @@ const AllCars = () => {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
-    const token = Cookies.get('token');
+
+    const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('token='))
+        ?.split('=')[1];
 
     useEffect(() => {
         if (!token) {
@@ -84,7 +87,7 @@ const AllCars = () => {
         const formData = new FormData();
 
         carData.images.forEach((file) => {
-            formData.append('image', file); 
+            formData.append('image', file);
         });
 
         formData.append('title', carData.title);
@@ -96,8 +99,11 @@ const AllCars = () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/addCar`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,  // Add the token to Authorization header
+                },
                 body: formData,
-                credentials: "include"
+                credentials: 'include',
             });
 
             if (!response.ok) {

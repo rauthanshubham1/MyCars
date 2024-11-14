@@ -2,21 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const CarDetail = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [car, setCar] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [updatedCar, setUpdatedCar] = useState({ title: '', description: '', tags: '' });
     const [loading, setLoading] = useState(true);
 
+    const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('token='))
+        ?.split('=')[1];
+
     useEffect(() => {
         const fetchCarDetails = async () => {
             try {
+
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/carDetails/${id}`, {
                     method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     credentials: 'include'
                 });
+
                 if (!response.ok) throw new Error('Failed to fetch car details');
                 const data = await response.json();
                 setCar(data);
@@ -40,12 +50,17 @@ const CarDetail = () => {
 
     const handleUpdateClick = async () => {
         try {
+
             const response = await fetch(`${process.env.REACT_APP_API_URL}/carDetails/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,  
+                },
                 credentials: 'include',
-                body: JSON.stringify(updatedCar),
+                body: JSON.stringify(updatedCar)
             });
+
             if (!response.ok) throw new Error('Failed to update car');
             const data = await response.json();
             setCar(data);
@@ -57,13 +72,18 @@ const CarDetail = () => {
 
     const handleDelete = async () => {
         try {
+
             const response = await fetch(`${process.env.REACT_APP_API_URL}/carDetails/${id}`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`  
+                },
                 credentials: 'include'
             });
+            
             if (!response.ok) throw new Error('Failed to delete car');
-            navigate(-1); 
+            navigate(-1);
         } catch (error) {
             console.error('Error deleting car:', error);
         }

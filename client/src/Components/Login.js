@@ -39,8 +39,8 @@ const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // const expires = new Date(Date.now() + 86400000).toUTCString();
-                // document.cookie = `token=${data.token}; expires=${expires}; path=/; HttpOnly, SameSite=Strict`;
+                const expires = new Date(Date.now() + 86400000).toUTCString();
+                document.cookie = `token=${data.token}; expires=${expires}; path=/; HttpOnly, SameSite=Strict`;
 
                 alert('Login successful!');
 

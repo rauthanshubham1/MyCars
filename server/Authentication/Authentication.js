@@ -1,16 +1,15 @@
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-
 const JWT_SECRET = process.env.JWT_SECRET;
-
 
 const authenticate = (req, res, next) => {
     try {
-        const token = req.cookies.token;
-        console.log(token);
-        if (!token) {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({ error: 'No token provided, authorization denied' });
         }
+
+        const token = authHeader.split(' ')[1];
+        console.log("Token received:", token);
 
         jwt.verify(token, JWT_SECRET, (err, decoded) => {
             if (err) {

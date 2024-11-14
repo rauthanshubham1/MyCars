@@ -8,11 +8,20 @@ const AllCars = () => {
     const [filteredCars, setFilteredCars] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
+    const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('token='))
+        ?.split('=')[1];
     useEffect(() => {
         const fetchCars = async () => {
             try {
+
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/allCars`, {
                     method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  
+                    },
                     credentials: 'include',
                 });
 
@@ -47,7 +56,7 @@ const AllCars = () => {
     }, [searchQuery, cars]);
 
     const handleCarClick = (carId) => {
-        navigate(`/cardetails/${carId}`); 
+        navigate(`/cardetails/${carId}`);
     };
 
     if (loading) return <div className="text-center"><Spinner animation="border" /></div>;

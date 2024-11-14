@@ -11,8 +11,10 @@ const apiRoutes = require('./routes/routes');
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 
 const port = 8000 || process.env.PORT;
 

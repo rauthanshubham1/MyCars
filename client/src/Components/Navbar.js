@@ -26,10 +26,12 @@ const Navbar = () => {
 
   const verifyAuthentication = async (token) => {
     try {
+
       const response = await fetch(`${process.env.REACT_APP_API_URL}/verify-token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: "include"
       });
