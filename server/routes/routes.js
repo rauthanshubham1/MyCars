@@ -225,6 +225,16 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '24h' });
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict',
+            expires: new Date(Date.now() + 86400000)  
+        });
+
+
+
         return res.json({ message: 'Login successful', token: token });
 
     } catch (error) {
