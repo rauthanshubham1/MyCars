@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const authenticate = require('../Authentication/Authentication');
 const cloudinary = require('cloudinary').v2;
+const path = require("path");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -234,10 +235,12 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Docs
+
 router.get("/docs", (req, res) => {
-    res.send("Docs");
-})
+    console.log(__dirname);
+    const docPath = path.join(__dirname, "../public/docs/SpyneAiDocs.pdf");
+    res.sendFile(docPath);
+});
 
 
 module.exports = router;

@@ -11,7 +11,6 @@ const Login = () => {
 
     useEffect(() => {
         const token = Cookies.get('token');
-        console.log("this is token: ", token);
         if (token) {
             navigate('/allcars');
         }
