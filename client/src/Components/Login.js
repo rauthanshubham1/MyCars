@@ -10,6 +10,7 @@ const Login = () => {
 
     useEffect(() => {
         const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        console.log("this is token: ", token);
         if (token) {
             navigate('/allcars');
         }
