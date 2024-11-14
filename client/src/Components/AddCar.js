@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { Spinner } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 
 const AllCars = () => {
     const [carData, setCarData] = useState({
@@ -15,10 +16,7 @@ const AllCars = () => {
 
     const navigate = useNavigate();
 
-    const token = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('token='))
-        ?.split('=')[1];
+    const token = Cookies.get('token');
 
     useEffect(() => {
         if (!token) {

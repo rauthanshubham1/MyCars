@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 
 const AllCars = () => {
     const [cars, setCars] = useState([]);
@@ -9,10 +10,8 @@ const AllCars = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const token = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('token='))
-        ?.split('=')[1];
+    const token = Cookies.get('token');
+
     useEffect(() => {
         const fetchCars = async () => {
             try {
@@ -20,7 +19,7 @@ const AllCars = () => {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/allCars`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`,  
+                        'Authorization': `Bearer ${token}`,
                     },
                     credentials: 'include',
                 });

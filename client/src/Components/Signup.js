@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        const token = Cookies.get('token');
         if (token) {
             navigate('/allcars');
         }

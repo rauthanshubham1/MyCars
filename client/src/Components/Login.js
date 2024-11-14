@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Login = () => {
     });
 
     useEffect(() => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        const token = Cookies.get('token');
         console.log("this is token: ", token);
         if (token) {
             navigate('/allcars');

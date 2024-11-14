@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const CarDetail = () => {
     const { id } = useParams();
@@ -9,10 +10,7 @@ const CarDetail = () => {
     const [updatedCar, setUpdatedCar] = useState({ title: '', description: '', tags: '' });
     const [loading, setLoading] = useState(true);
 
-    const token = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('token='))
-        ?.split('=')[1];
+    const token = Cookies.get('token');
 
     useEffect(() => {
         const fetchCarDetails = async () => {
@@ -55,7 +53,7 @@ const CarDetail = () => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,  
+                    'Authorization': `Bearer ${token}`,
                 },
                 credentials: 'include',
                 body: JSON.stringify(updatedCar)
@@ -77,11 +75,11 @@ const CarDetail = () => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`  
+                    'Authorization': `Bearer ${token}`
                 },
                 credentials: 'include'
             });
-            
+
             if (!response.ok) throw new Error('Failed to delete car');
             navigate(-1);
         } catch (error) {
